@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfe AI - Agentic Software Development</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, #0f172a 0%, #111827 35%, #0b1020 100%);
+      color: #e5e7eb;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+
+    .hero {
+      background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.2), transparent 30%),
+        radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.15), transparent 32%),
+        linear-gradient(135deg, #1f3c88, #39a0ed);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      text-align: left;
+      color: #f8fafc;
+    }
+
+    .hero .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.9rem;
+      margin: 0 0 0.6rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      margin: 0.5rem 0 1rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.1rem;
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .cta:hover,
+    .cta:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.3);
+    }
+
+    .link-secondary {
+      color: #c7d2fe;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .content {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      align-items: start;
+      gap: 1.75rem;
+    }
+
+    .text-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.5rem 1.25rem;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(6px);
+    }
+
+    .card h2 {
+      margin: 0 0 0.6rem;
+      font-size: 1.35rem;
+      color: #e0e7ff;
+    }
+
+    .card p {
+      margin: 0 0 0.85rem;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+
+    .footer-note {
+      color: #cbd5e1;
+      font-size: 0.98rem;
+    }
+
+    .card ul {
+      margin: 0.4rem 0 0.2rem;
+      padding-left: 1.2rem;
+      color: #e5e7eb;
+      line-height: 1.55;
+    }
+
+    .card ul li + li {
+      margin-top: 0.35rem;
+    }
+
+    .visuals {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .visuals a {
+      display: block;
+    }
+
+    .visuals img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .footer-link {
+      margin-top: 1.5rem;
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+    }
+
+    .footer-link a {
+      color: #93c5fd;
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 2rem 1.25rem;
+      }
+
+      .cta-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow"><a href="index.html">Lochner Technology</a></p>
+      <h1>Alfe AI</h1>
+      <p>Agentic software development, chat, and image design</p>
+      <div class="cta-row">
+        <a class="cta" href="https://alfe.bot" target="_blank" rel="noopener">Try it on https://alfe.bot</a>
+      </div>
+    </section>
+
+      <section class="content" aria-label="Alfe AI details">
+        <article class="card">
+          <div class="visuals" aria-hidden="true">
+            <a href="images/alfe/1.png" target="_blank" rel="noopener">
+              <img src="images/alfe/1.png" alt="Alfe AI design preview 1">
+            </a>
+            <a href="images/alfe/2.png" target="_blank" rel="noopener">
+              <img src="images/alfe/2.png" alt="Alfe AI design preview 2">
+            </a>
+            <a href="images/alfe/3.png" target="_blank" rel="noopener">
+              <img src="images/alfe/3.png" alt="Alfe AI design preview 3">
+            </a>
+            <a href="images/alfe/4.png" target="_blank" rel="noopener">
+              <img src="images/alfe/4.png" alt="Alfe AI design preview 4">
+            </a>
+            <a href="images/alfe/5.png" target="_blank" rel="noopener">
+              <img src="images/alfe/5.png" alt="Alfe AI design preview 5">
+            </a>
+            <a href="images/alfe/6.png" target="_blank" rel="noopener">
+              <img src="images/alfe/6.png" alt="Alfe AI design preview 6">
+            </a>
+            <a href="images/alfe/7.png" target="_blank" rel="noopener">
+              <img src="images/alfe/7.png" alt="Alfe AI design preview 7">
+            </a>
+            <a href="images/alfe/8.png" target="_blank" rel="noopener">
+              <img src="images/alfe/8.png" alt="Alfe AI design preview 8">
+            </a>
+            <a href="images/alfe/9.png" target="_blank" rel="noopener">
+              <img src="images/alfe/9.png" alt="Alfe AI design preview 9">
+            </a>
+        </div>
+      </article>
+
+      <div class="text-stack">
+        <article class="card">
+          <p>Alfe AI (<a href="https://alfe.bot" target="_blank" rel="noopener">https://alfe.bot</a>) is a cross-platform app with free and paid tiers for agentic software development, project management, image design, and AI chat with embedded web search.</p>
+          <p class="footer-note">Responsibilities include product strategy, full-stack development, cloud/DevOps, data pipelines, and integrations (AI APIs, Printify, marketplaces, payments, fulfillment).</p>
+        </article>
+
+        <article class="card">
+          <p>Architected and implemented Alfe AI services in Node.js and Python (<a href="https://github.com/alfe-ai/alfe-ai" target="_blank" rel="noopener">github.com/alfe-ai/alfe-ai</a>):</p>
+          <ul>
+            <li>Software development automation tooling</li>
+            <li>Image design, project management, AI chat &amp; search</li>
+            <li>Finance dashboards, accounting utilities, and marketplace transaction reconciliation (eBay, Amazon)</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Commerce and operations</h2>
+          <p>Launched Lochner Apparel (<a href="https://www.ebay.com/str/lochnerapparel" target="_blank" rel="noopener">ebay.com/str/lochnerapparel</a>), an AI-driven T-Shirt brand on eBay, Amazon, and Shopify, with orders fulfilled via on-demand Printify integration.</p>
+          <ul>
+            <li>Designs are generated by Alfe AI</li>
+            <li>E-commerce operations generated approximately $15,000 in gross sales over the past year across eBay, Amazon, and Shopify</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer-link">Looking for more? Return to the <a href="index.html">Lochner Technology home page</a>.</p>
+  </div>
+</body>
+</html>
