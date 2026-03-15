@@ -1,0 +1,9 @@
+{
+  "name": "lochner-tech-site",
+  "version": "1.0.0",
+  "description": "Node.js static host for lochner.tech with HTTP and HTTPS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
