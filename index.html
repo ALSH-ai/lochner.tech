@@ -19,20 +19,28 @@
       color: #f1f1f1;
     }
     .site-header {
+      position: relative;
+      overflow: hidden;
       text-align: center;
       padding: 3rem 1.5rem 2rem;
-      background: linear-gradient(135deg, #101728, #274060);
+      background:
+        radial-gradient(circle at 22% 16%, rgba(0, 229, 255, 0.28), transparent 36%),
+        radial-gradient(circle at 78% 22%, rgba(105, 117, 255, 0.35), transparent 44%),
+        linear-gradient(135deg, #10182c 0%, #1f3b6c 52%, #13345a 100%);
       color: #ffffff;
+      border-bottom: 1px solid rgba(90, 162, 255, 0.35);
+      box-shadow: inset 0 -1px 0 rgba(140, 201, 255, 0.24), 0 10px 30px rgba(1, 7, 20, 0.55);
     }
     .site-header h1 {
       margin: 0;
       font-size: clamp(2rem, 4vw, 3rem);
       letter-spacing: 0.05em;
+      text-shadow: 0 0 16px rgba(153, 220, 255, 0.22);
     }
     .site-header p {
       margin: 0.75rem 0 0;
       font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      color: rgba(255, 255, 255, 0.75);
+      color: rgba(220, 240, 255, 0.9);
     }
     .cta-buttons {
       display: flex;
