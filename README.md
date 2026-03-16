@@ -22,6 +22,6 @@ npm start
 ```
 
 The server will:
-- Serve the site on port `80` (HTTP)
+- Redirect all HTTP requests on port `80` to HTTPS
 - Serve the site on port `443` (HTTPS)
 - Select the correct certificate for `lochner.tech` and `www.lochner.tech` using SNI

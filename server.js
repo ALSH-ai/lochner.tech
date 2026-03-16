@@ -89,9 +89,20 @@ const requestHandler = (req, res) => {
   });
 };
 
-http.createServer(requestHandler).listen(HTTP_PORT, () => {
-  console.log(`HTTP server listening on port ${HTTP_PORT}`);
-});
+http
+  .createServer((req, res) => {
+    const host = req.headers.host || 'lochner.tech';
+    const redirectUrl = `https://${host}${req.url || '/'}`;
+
+    res.writeHead(301, {
+      Location: redirectUrl,
+      'Content-Type': 'text/plain; charset=utf-8',
+    });
+    res.end(`Redirecting to ${redirectUrl}`);
+  })
+  .listen(HTTP_PORT, () => {
+    console.log(`HTTP redirect server listening on port ${HTTP_PORT}`);
+  });
 
 const httpsOptions = {
   key: defaultTlsContext.key,
