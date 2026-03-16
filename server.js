@@ -1,24 +1,44 @@
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
+const tls = require('tls');
 const path = require('path');
 
-loadDotEnv(path.join(__dirname, '.env'));
-
 const ROOT_DIR = __dirname;
-const HTTP_PORT = parsePort(process.env.HTTP_PORT, 80);
-const HTTPS_PORT = parsePort(process.env.HTTPS_PORT, 443);
+const HTTP_PORT = 80;
+const HTTPS_PORT = 443;
 
-const TLS_KEY_PATH = process.env.TLS_KEY_PATH;
-const TLS_CERT_PATH = process.env.TLS_CERT_PATH;
-const TLS_CHAIN_PATH = process.env.TLS_CHAIN_PATH;
+const TLS_CERTIFICATES = [
+  {
+    servername: 'lochner.tech',
+    keyPath: '/etc/letsencrypt/live/lochner.tech/privkey.pem',
+    certPath: '/etc/letsencrypt/live/lochner.tech/fullchain.pem',
+  },
+  {
+    servername: 'www.lochner.tech',
+    keyPath: '/etc/letsencrypt/live/www.lochner.tech/privkey.pem',
+    certPath: '/etc/letsencrypt/live/www.lochner.tech/fullchain.pem',
+  },
+];
 
-if (!TLS_KEY_PATH || !TLS_CERT_PATH) {
-  console.error(
-    'Missing TLS env vars. Set TLS_KEY_PATH and TLS_CERT_PATH in .env to your certbot files.'
-  );
+const tlsContexts = TLS_CERTIFICATES.map(({ servername, keyPath, certPath }) => {
+  const key = fs.readFileSync(keyPath);
+  const cert = fs.readFileSync(certPath);
+
+  return {
+    servername,
+    context: tls.createSecureContext({ key, cert }),
+    key,
+    cert,
+  };
+});
+
+if (tlsContexts.length === 0) {
+  console.error('No TLS certificates configured.');
   process.exit(1);
 }
+
+const defaultTlsContext = tlsContexts[0];
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -74,30 +94,24 @@ http.createServer(requestHandler).listen(HTTP_PORT, () => {
 });
 
 const httpsOptions = {
-  key: fs.readFileSync(resolveTlsPath(TLS_KEY_PATH)),
-  cert: fs.readFileSync(resolveTlsPath(TLS_CERT_PATH)),
-};
+  key: defaultTlsContext.key,
+  cert: defaultTlsContext.cert,
+  SNICallback(servername, cb) {
+    const match = tlsContexts.find((tlsContext) => tlsContext.servername === servername);
+    const context = match ? match.context : defaultTlsContext.context;
 
-if (TLS_CHAIN_PATH) {
-  httpsOptions.ca = fs.readFileSync(resolveTlsPath(TLS_CHAIN_PATH));
-}
+    if (cb) {
+      cb(null, context);
+      return;
+    }
+
+    return context;
+  },
+};
 
 https.createServer(httpsOptions, requestHandler).listen(HTTPS_PORT, () => {
   console.log(`HTTPS server listening on port ${HTTPS_PORT}`);
 });
-
-function resolveTlsPath(tlsPath) {
-  return path.isAbsolute(tlsPath) ? tlsPath : path.resolve(ROOT_DIR, tlsPath);
-}
-
-function parsePort(value, fallback) {
-  if (!value) {
-    return fallback;
-  }
-
-  const parsed = Number.parseInt(value, 10);
-  return Number.isNaN(parsed) ? fallback : parsed;
-}
 
 function respond404(res) {
   const fallbackPage = path.join(ROOT_DIR, '50x.html');
@@ -111,32 +125,4 @@ function respond404(res) {
     res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(data);
   });
-}
-
-function loadDotEnv(envPath) {
-  if (!fs.existsSync(envPath)) {
-    return;
-  }
-
-  const content = fs.readFileSync(envPath, 'utf8');
-  const lines = content.split(/\r?\n/);
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!line || line.startsWith('#')) {
-      continue;
-    }
-
-    const separatorIndex = line.indexOf('=');
-    if (separatorIndex === -1) {
-      continue;
-    }
-
-    const key = line.slice(0, separatorIndex).trim();
-    const value = line.slice(separatorIndex + 1).trim().replace(/^['"]|['"]$/g, '');
-
-    if (!(key in process.env)) {
-      process.env[key] = value;
-    }
-  }
 }

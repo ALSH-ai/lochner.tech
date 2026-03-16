@@ -1,18 +1,19 @@
 # lochner.tech static site host
 
-This repository now includes a Node.js server to host the static website files over both HTTP and HTTPS.
+This repository includes a Node.js server to host the static website files over both HTTP and HTTPS.
 
-## Setup
+## Certificate configuration
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Copy `.env.example` to `.env` and set certbot paths:
-   ```bash
-   cp .env.example .env
-   ```
-3. Update `.env` with your real certificate paths.
+The server is configured with hardcoded certbot paths and serves both domains simultaneously via SNI:
+
+- `lochner.tech`
+  - `/etc/letsencrypt/live/lochner.tech/privkey.pem`
+  - `/etc/letsencrypt/live/lochner.tech/fullchain.pem`
+- `www.lochner.tech`
+  - `/etc/letsencrypt/live/www.lochner.tech/privkey.pem`
+  - `/etc/letsencrypt/live/www.lochner.tech/fullchain.pem`
+
+If your cert paths change, update `TLS_CERTIFICATES` in `server.js`.
 
 ## Run
 
@@ -21,6 +22,6 @@ npm start
 ```
 
 The server will:
-- Serve the site on `HTTP_PORT` (default `80`)
-- Serve the site on `HTTPS_PORT` (default `443`)
-- Use certbot cert paths from `.env` (`TLS_KEY_PATH`, `TLS_CERT_PATH`, optional `TLS_CHAIN_PATH`)
+- Serve the site on port `80` (HTTP)
+- Serve the site on port `443` (HTTPS)
+- Select the correct certificate for `lochner.tech` and `www.lochner.tech` using SNI
