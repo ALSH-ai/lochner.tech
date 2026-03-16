@@ -56,7 +56,13 @@ const mimeTypes = {
 };
 
 const requestHandler = (req, res) => {
-  const urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
+  const urlPath = decodeRequestPath(req.url);
+  if (urlPath === null) {
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Bad Request');
+    return;
+  }
+
   const relativePath = urlPath === '/' ? '/index.html' : urlPath;
   const filePath = path.normalize(path.join(ROOT_DIR, relativePath));
 
@@ -136,4 +142,14 @@ function respond404(res) {
     res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(data);
   });
+}
+
+function decodeRequestPath(rawUrl) {
+  const rawPath = (rawUrl || '/').split('?')[0];
+
+  try {
+    return decodeURIComponent(rawPath);
+  } catch {
+    return null;
+  }
 }
