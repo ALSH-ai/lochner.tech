@@ -235,6 +235,14 @@
       </div>
     </div>
     <div class="footer-link">Prefer to browse directly? <a href="https://www.ebay.com/str/lochnerapparel" target="_blank" rel="noopener">Open the Lochner Apparel eBay store</a>.</div>
+    <footer style="text-align:center; color:#9aa4ba; padding:1rem 1.5rem 2rem;">
+      <small>© <span class="copyright-year"></span> Lochner Technology · Minneapolis, MN</small>
+    </footer>
   </div>
+  <script>
+    document.querySelectorAll(".copyright-year").forEach((yearEl) => {
+      yearEl.textContent = new Date().getFullYear();
+    });
+  </script>
 </body>
 </html>

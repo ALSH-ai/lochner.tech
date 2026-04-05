@@ -294,6 +294,14 @@
     </section>
 
     <p class="footer-link">Looking for more? Return to the <a href="index.html">Lochner Technology home page</a>.</p>
+    <footer style="text-align:center; color:#9aa4ba; padding:0 1.5rem 2rem;">
+      <small>© <span class="copyright-year"></span> Lochner Technology · Minneapolis, MN</small>
+    </footer>
   </div>
+  <script>
+    document.querySelectorAll(".copyright-year").forEach((yearEl) => {
+      yearEl.textContent = new Date().getFullYear();
+    });
+  </script>
 </body>
 </html>

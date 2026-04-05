@@ -425,8 +425,12 @@
     </section>
   </main>
   <footer style="text-align:center; color:#9aa4ba; padding:0 1.5rem 2rem;">
-    <small>© 2026 Lochner Technology · Minneapolis, MN</small>
+    <small>© <span id="copyright-year"></span> Lochner Technology · Minneapolis, MN</small>
   </footer>
+
+  <script>
+    document.getElementById("copyright-year").textContent = new Date().getFullYear();
+  </script>
 
 </body>
 </html>
