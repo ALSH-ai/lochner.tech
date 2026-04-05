@@ -7,6 +7,7 @@ const path = require('path');
 const ROOT_DIR = __dirname;
 const HTTP_PORT = resolveHttpPort(process.argv.slice(2));
 const HTTPS_PORT = 443;
+const COPYRIGHT_YEAR = new Date().getFullYear();
 const NON_PUBLIC_PATH_PREFIXES = ['/alsh-logo-generator', '/alsh-logo-generator/'];
 const PUBLIC_FILE_OVERRIDES = new Set(['/alsh-logo-generator/alsh-logo.png']);
 
@@ -69,6 +70,34 @@ const mimeTypes = {
   '.txt': 'text/plain; charset=utf-8',
 };
 
+const SHARED_HEADER_TEMPLATE = `
+  <header class="site-header">
+    <h1>Lochner Technology</h1>
+    <p>Lochner Technology builds developer software and AI-assisted workflow tools.</p>
+    <div class="cta-buttons">
+      <a class="cta-button" href="https://www.linkedin.com/in/nicholaslochner/" target="_blank" rel="noopener" title="Open LinkedIn profile">
+        LinkedIn
+      </a>
+      <a class="cta-button" href="https://www.freelancer.com/hireme/nlochner" target="_blank" rel="noopener" title="Open Freelancer profile">
+        Freelancer.com
+      </a>
+      <a class="cta-button" href="https://github.com/lochner-lw" target="_blank" rel="noopener" title="Open GitHub profile">
+        GitHub
+      </a>
+      <a class="cta-button" href="https://www.npmjs.com/~lochner-lw" target="_blank" rel="noopener" title="Open npm profile">
+        NPM
+      </a>
+    </div>
+    <p class="banner-email"><a href="mailto:hello@lochner.tech">hello@lochner.tech</a></p>
+  </header>
+`;
+
+const SHARED_FOOTER_TEMPLATE = `
+  <footer class="site-footer">
+    <small>© ${COPYRIGHT_YEAR} Lochner Technology · Minneapolis, MN</small>
+  </footer>
+`;
+
 const requestHandler = (req, res) => {
   const urlPath = decodeRequestPath(req.url);
   if (urlPath === null) {
@@ -109,9 +138,12 @@ const requestHandler = (req, res) => {
 
       const ext = path.extname(resolvedPath).toLowerCase();
       const contentType = mimeTypes[ext] || 'application/octet-stream';
+      const responseData = ext === '.html'
+        ? applySharedTemplate(data.toString('utf8'))
+        : data;
 
       res.writeHead(200, { 'Content-Type': contentType });
-      res.end(data);
+      res.end(responseData);
     });
   });
 };
@@ -205,4 +237,10 @@ function resolveHttpPort(argv) {
   }
 
   return 80;
+}
+
+function applySharedTemplate(html) {
+  return html
+    .replace('<!-- SHARED_HEADER -->', SHARED_HEADER_TEMPLATE)
+    .replace('<!-- SHARED_FOOTER -->', SHARED_FOOTER_TEMPLATE);
 }
