@@ -54,7 +54,7 @@ const PARTS = [
   { text: "S", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: "H", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: ".", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
-  { text: "ai", fontSize: SIZE_AI, dx: DOT_TO_AI_SPACING, yOffset: 8 }
+  { text: "ai", fontSize: SIZE_AI, dx: DOT_TO_AI_SPACING, yOffset: -20 }
 ];
 
 // Add overall letter tracking if you want more openness.
