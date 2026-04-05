@@ -14,6 +14,7 @@ const CURVED_L_TRANSLATE_X = 200;
 const CURVED_L_TRANSLATE_Y = 138;
 const CURVED_L_FAUX_BOLD_STROKE = 18;
 const STRAIGHT_SIZE = 300;
+const A_ITALIC_SKEW_DEGREES = 12;
 
 const A_X = 120;
 const A_Y = 560;
@@ -58,6 +59,24 @@ function pathBounds(pathObject) {
     x2: bounds.x2,
     y2: bounds.y2,
   };
+}
+
+function skewPathX(pathObject, skewDegrees, pivotY) {
+  const skew = Math.tan((skewDegrees * Math.PI) / 180);
+
+  for (const command of pathObject.commands) {
+    if (typeof command.x === "number" && typeof command.y === "number") {
+      command.x += (command.y - pivotY) * skew;
+    }
+
+    if (typeof command.x1 === "number" && typeof command.y1 === "number") {
+      command.x1 += (command.y1 - pivotY) * skew;
+    }
+
+    if (typeof command.x2 === "number" && typeof command.y2 === "number") {
+      command.x2 += (command.y2 - pivotY) * skew;
+    }
+  }
 }
 
 async function loadFont(fontPath) {
@@ -142,6 +161,7 @@ async function main() {
 
   const lPathObject = lGlyph.getPath(L_X, L_Y - 40, CURVED_L_SIZE);
   const aPathObject = straightFont.getPath("A", A_X, A_Y, STRAIGHT_SIZE);
+  skewPathX(aPathObject, A_ITALIC_SKEW_DEGREES, A_Y);
   const shPathObject = straightFont.getPath("SH", SH_X, SH_Y, STRAIGHT_SIZE);
   const dotAiPathObject = straightFont.getPath(".ai", DOT_AI_X, DOT_AI_Y, DOT_AI_SIZE);
 
