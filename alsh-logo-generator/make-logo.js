@@ -3,7 +3,7 @@
 // Generate a transparent PNG logo for: ALSH.ai
 //
 // Before running:
-// 1) Put Explora-Regular.ttf in ./fonts/
+// 1) Put Explora-Regular.ttf in ./fonts/ (optional but recommended)
 // 2) npm install
 // 3) node make-logo.js
 //
@@ -42,12 +42,31 @@ const EXTRA_TRACKING = 0;
 // LOAD EXPLORA FOR THE L
 // --------------------
 
-const exploraPath = path.join(__dirname, "fonts", "Explora-Regular.ttf");
-registerFont(exploraPath, {
-  family: "Explora",
-  weight: "400",
-  style: "normal",
-});
+const fontsDir = path.join(__dirname, "fonts");
+const exploraPath = process.env.EXPLORA_FONT_PATH || path.join(fontsDir, "Explora-Regular.ttf");
+let hasExplora = false;
+
+if (fs.existsSync(exploraPath)) {
+  registerFont(exploraPath, {
+    family: "Explora",
+    weight: "400",
+    style: "normal",
+  });
+  hasExplora = true;
+} else {
+  console.warn(
+    [
+      `Explora font not found at: ${exploraPath}`,
+      "Using fallback font for the L.",
+      "To use Explora:",
+      "  1) Create ./fonts in alsh-logo-generator",
+      "  2) Download Explora-Regular.ttf from Google Fonts",
+      "  3) Save it as ./fonts/Explora-Regular.ttf",
+      "  4) Re-run: node make-logo.js",
+      "You can also set EXPLORA_FONT_PATH=/absolute/path/to/Explora-Regular.ttf",
+    ].join("\n")
+  );
+}
 
 // --------------------
 // PARTS
@@ -63,9 +82,9 @@ const PARTS = [
     text: "L",
     fontSize: 360,
     dx: 28,
-    family: "Explora",
+    family: hasExplora ? "Explora" : "Times New Roman",
     style: "normal",
-    weight: "400",
+    weight: hasExplora ? "400" : "700",
     yOffset: 10,
   },
 
