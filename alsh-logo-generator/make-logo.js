@@ -46,13 +46,10 @@ const BASELINE_Y = 520;
 const LETTER_SPACING = 10;
 const DOT_TO_AI_SPACING = 14;
 
-// Stylized "L" built from a lowercase "l" with a curved custom foot extension.
-const CURVY_L_FOOT = 88;
-const CURVY_L_THICKNESS = 26;
-
 const PARTS = [
   { text: "A", fontSize: SIZE_MAIN, dx: 0 },
-  { kind: "curvyL", text: "l", fontSize: SIZE_MAIN, dx: LETTER_SPACING, style: "italic" },
+  // Use a real uppercase "L" glyph from a curved serif italic face.
+  { text: "L", fontSize: SIZE_MAIN, dx: LETTER_SPACING, family: "Times New Roman", style: "italic" },
   { text: "S", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: "H", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: ".", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
@@ -83,11 +80,6 @@ function setFont(ctx, part) {
 }
 
 function measurePart(ctx, part) {
-  if (part.kind === "curvyL") {
-    setFont(ctx, part);
-    return ctx.measureText(part.text).width + CURVY_L_FOOT;
-  }
-
   setFont(ctx, part);
   const metrics = ctx.measureText(part.text).width;
   return metrics * (part.stretchX || 1);
@@ -126,45 +118,16 @@ for (let i = 0; i < PARTS.length; i++) {
 
   const y = BASELINE_Y + (part.yOffset || 0);
 
-  if (part.kind === "curvyL") {
-    setFont(ctx, part);
-    const glyphWidth = ctx.measureText(part.text).width;
-    ctx.fillText(part.text, x, y);
-
-    // Extend the lowercase "l" into a distinct capital-L curved foot.
-    const footStartX = x + glyphWidth - 8;
-    const footY = y - CURVY_L_THICKNESS * 0.5;
-    const footEndX = footStartX + CURVY_L_FOOT;
-
+  setFont(ctx, part);
+  const stretchX = part.stretchX || 1;
+  if (stretchX !== 1) {
     ctx.save();
-    ctx.beginPath();
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.lineWidth = CURVY_L_THICKNESS;
-    ctx.moveTo(footStartX, footY);
-    ctx.bezierCurveTo(
-      footStartX + CURVY_L_FOOT * 0.2,
-      footY + CURVY_L_THICKNESS * 0.08,
-      footStartX + CURVY_L_FOOT * 0.72,
-      footY + CURVY_L_THICKNESS * 0.05,
-      footEndX,
-      footY
-    );
-    ctx.strokeStyle = TEXT_COLOR;
-    ctx.stroke();
+    ctx.translate(x, y);
+    ctx.scale(stretchX, 1);
+    ctx.fillText(part.text, 0, 0);
     ctx.restore();
   } else {
-    setFont(ctx, part);
-    const stretchX = part.stretchX || 1;
-    if (stretchX !== 1) {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.scale(stretchX, 1);
-      ctx.fillText(part.text, 0, 0);
-      ctx.restore();
-    } else {
-      ctx.fillText(part.text, x, y);
-    }
+    ctx.fillText(part.text, x, y);
   }
 
   x += measurePart(ctx, part);
