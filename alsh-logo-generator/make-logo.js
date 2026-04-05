@@ -2,16 +2,16 @@
 //
 // Generate a transparent PNG logo for: ALSH.ai
 //
-// Install:
-//   npm install
-//
-// Run:
-//   node make-logo.js
+// Before running:
+// 1) Put Explora-Regular.ttf in ./fonts/
+// 2) npm install
+// 3) node make-logo.js
 //
 // Output:
 //   ./alsh-logo.png
 
 const fs = require("fs");
+const path = require("path");
 const { createCanvas, registerFont } = require("canvas");
 
 // --------------------
@@ -22,58 +22,57 @@ const OUTPUT_FILE = "alsh-logo.png";
 const WIDTH = 2400;
 const HEIGHT = 800;
 
-// Transparent background
 const BACKGROUND = "rgba(0,0,0,0)";
 const TEXT_COLOR = "#FFFFFF";
 
-// Decorative "L" font (preferred):
-// Put the font file in ./fonts/
-// Example: ./fonts/CormorantGaramond-SemiBoldItalic.ttf
-const DECORATIVE_L_FONT_PATH = "./fonts/CormorantGaramond-SemiBoldItalic.ttf";
-const DECORATIVE_L_FAMILY = "Cormorant Garamond";
-const HAS_DECORATIVE_L_FONT = fs.existsSync(DECORATIVE_L_FONT_PATH);
-
-if (HAS_DECORATIVE_L_FONT) {
-  registerFont(DECORATIVE_L_FONT_PATH, {
-    family: DECORATIVE_L_FAMILY,
-    weight: "600",
-    style: "italic"
-  });
-} else {
-  console.warn(
-    `[warn] Missing ${DECORATIVE_L_FONT_PATH}; using fallback italic serif for "L".`
-  );
-}
-
+// Main default font for A, S, H, .
 const FONT_FAMILY = "Georgia";
 const FONT_WEIGHT = "700";
 const FONT_STYLE = "normal";
 
 const SIZE_MAIN = 320;
 const SIZE_AI = 250;
-
-// Baseline
 const BASELINE_Y = 520;
 
-// Manual character spacing.
-// Keep spacing consistent across the wordmark so no pair feels too tight/wide.
 const LETTER_SPACING = 10;
 const DOT_TO_AI_SPACING = 14;
+const EXTRA_TRACKING = 0;
+
+// --------------------
+// LOAD EXPLORA FOR THE L
+// --------------------
+
+const exploraPath = path.join(__dirname, "fonts", "Explora-Regular.ttf");
+registerFont(exploraPath, {
+  family: "Explora",
+  weight: "400",
+  style: "normal",
+});
+
+// --------------------
+// PARTS
+// --------------------
 
 const PARTS = [
   { text: "A", fontSize: SIZE_MAIN, dx: 0 },
-  // Swap only the "L" to a decorative display serif.
+
+  // Curvier custom L using Explora
+  // Increased size so the thin strokes still feel substantial.
+  // Extra spacing after it so it does not crowd the S.
   {
     text: "L",
-    fontSize: 350,
-    dx: 22,
-    family: HAS_DECORATIVE_L_FONT ? DECORATIVE_L_FAMILY : "Palatino Linotype",
-    style: "italic",
-    weight: "600"
+    fontSize: 360,
+    dx: 28,
+    family: "Explora",
+    style: "normal",
+    weight: "400",
+    yOffset: 10,
   },
-  { text: "S", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
+
+  { text: "S", fontSize: SIZE_MAIN, dx: 18 },
   { text: "H", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: ".", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
+
   {
     text: "ai",
     fontSize: SIZE_AI,
@@ -81,12 +80,9 @@ const PARTS = [
     yOffset: 0,
     family: "Arial",
     style: "normal",
-    weight: "700"
-  }
+    weight: "700",
+  },
 ];
-
-// Add overall letter tracking if you want more openness.
-const EXTRA_TRACKING = 0;
 
 // --------------------
 // HELPERS
@@ -102,8 +98,8 @@ function setFont(ctx, part) {
 
 function measurePart(ctx, part) {
   setFont(ctx, part);
-  const metrics = ctx.measureText(part.text).width;
-  return metrics * (part.stretchX || 1);
+  const width = ctx.measureText(part.text).width;
+  return width * (part.stretchX || 1);
 }
 
 // --------------------
@@ -113,12 +109,11 @@ function measurePart(ctx, part) {
 const canvas = createCanvas(WIDTH, HEIGHT);
 const ctx = canvas.getContext("2d");
 
-// Transparent background
 ctx.clearRect(0, 0, WIDTH, HEIGHT);
 ctx.fillStyle = BACKGROUND;
 ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-// Measure total width first so we can center it.
+// Measure total width for centering
 let totalWidth = 0;
 for (let i = 0; i < PARTS.length; i++) {
   const part = PARTS[i];
@@ -135,11 +130,15 @@ ctx.textBaseline = "alphabetic";
 
 for (let i = 0; i < PARTS.length; i++) {
   const part = PARTS[i];
-  if (i > 0) x += part.dx + EXTRA_TRACKING;
+
+  if (i > 0) {
+    x += part.dx + EXTRA_TRACKING;
+  }
 
   const y = BASELINE_Y + (part.yOffset || 0);
 
   setFont(ctx, part);
+
   const stretchX = part.stretchX || 1;
   if (stretchX !== 1) {
     ctx.save();
