@@ -43,12 +43,38 @@ const EXTRA_TRACKING = 0;
 // --------------------
 
 const fontsDir = path.join(__dirname, "fonts");
-const exploraPath = process.env.EXPLORA_FONT_PATH || path.join(fontsDir, "Explora-Regular.ttf");
+const EXPLORA_FAMILY = "ALSHExplora";
+
+function resolveExploraPath() {
+  if (process.env.EXPLORA_FONT_PATH) {
+    return process.env.EXPLORA_FONT_PATH;
+  }
+
+  const defaultPath = path.join(fontsDir, "Explora-Regular.ttf");
+  if (fs.existsSync(defaultPath)) {
+    return defaultPath;
+  }
+
+  if (!fs.existsSync(fontsDir)) {
+    return defaultPath;
+  }
+
+  const fontFiles = fs.readdirSync(fontsDir).filter((file) => /\.(ttf|otf)$/i.test(file));
+  const exploraLike = fontFiles.find((file) => /explor/i.test(file));
+
+  if (exploraLike) {
+    return path.join(fontsDir, exploraLike);
+  }
+
+  return defaultPath;
+}
+
+const exploraPath = resolveExploraPath();
 let hasExplora = false;
 
 if (fs.existsSync(exploraPath)) {
   registerFont(exploraPath, {
-    family: "Explora",
+    family: EXPLORA_FAMILY,
     weight: "400",
     style: "normal",
   });
@@ -82,7 +108,7 @@ const PARTS = [
     text: "L",
     fontSize: 360,
     dx: 28,
-    family: hasExplora ? "Explora" : "Times New Roman",
+    family: hasExplora ? EXPLORA_FAMILY : "Times New Roman",
     style: "normal",
     weight: hasExplora ? "400" : "700",
     yOffset: 10,
