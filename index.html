@@ -135,8 +135,8 @@
     .alsh-thumb {
       max-width: 520px;
       aspect-ratio: 16 / 10;
-      object-fit: contain;
-      background: rgba(8, 11, 20, 0.55);
+      object-fit: cover;
+      object-position: left center;
     }
     .section-body {
       display: flex;
@@ -275,6 +275,13 @@
       width: min(100%, 360px);
       max-height: 86px;
       object-fit: contain;
+      transform: translateX(-26.25%);
+      transform-origin: left center;
+    }
+
+    .alsh-logo-title {
+      width: min(100%, 360px);
+      overflow: hidden;
     }
 
   </style>
@@ -284,14 +291,12 @@
     <h1>Lochner Technology</h1>
     <p>Lochner Technology builds developer software and AI-assisted workflow tools.</p>
     <div class="cta-buttons">
-      <!--<a class="cta-button" href="https://www.freelancer.com/hireme/nlochner" target="_blank" rel="noopener" title="Open Freelancer profile">
-        Hire me on Freelancer.com
-      </a>
-    
-    <br />-->
-      <!--<a class="cta-button" href="https://www.linkedin.com/in/nicholaslochner/" target="_blank" rel="noopener" title="Open LinkedIn profile">
+      <a class="cta-button" href="https://www.linkedin.com/in/nicholaslochner/" target="_blank" rel="noopener" title="Open LinkedIn profile">
         LinkedIn
-      </a>-->
+      </a>
+      <a class="cta-button" href="https://www.freelancer.com/hireme/nlochner" target="_blank" rel="noopener" title="Open Freelancer profile">
+        Freelancer.com
+      </a>
       <a class="cta-button" href="https://github.com/lochner-lw" target="_blank" rel="noopener" title="Open GitHub profile">
         GitHub
       </a>
@@ -301,7 +306,7 @@
     <a class="section-link section-link-with-thumb alsh-feature-card" href="alsh.ai.html" target="_blank" rel="noopener">
       <img class="section-thumb alsh-thumb" src="images/alfe/1.png" alt="AlSH.ai interface preview">
       <div class="section-body">
-        <h1><img class="brand-logo" src="alsh-logo-generator/alsh-logo.png" alt="AlSH.ai"></h1>
+        <h1 class="alsh-logo-title"><img class="brand-logo" src="alsh-logo-generator/alsh-logo.png" alt="AlSH.ai"></h1>
         <h2 class="section-subtitle">Agentic Software Development</h2>
         <p>Our flagship product: an AI code agent for full-project execution.</p>
         <small>Formerly Alfe AI</small>
