@@ -43,7 +43,7 @@ const EXTRA_TRACKING = 0;
 // --------------------
 
 const fontsDir = path.join(__dirname, "fonts");
-const EXPLORA_FAMILY = "ALSHExplora";
+const EXPLORA_FAMILY = "Explora";
 
 function resolveExploraPath() {
   if (process.env.EXPLORA_FONT_PATH) {
@@ -79,6 +79,7 @@ if (fs.existsSync(exploraPath)) {
     style: "normal",
   });
   hasExplora = true;
+  console.log(`Loaded Explora font from: ${exploraPath}`);
 } else {
   console.warn(
     [
@@ -105,7 +106,7 @@ const PARTS = [
   // Increased size so the thin strokes still feel substantial.
   // Extra spacing after it so it does not crowd the S.
   {
-    text: "L",
+    text: "ℒ",
     fontSize: 360,
     dx: 28,
     family: hasExplora ? EXPLORA_FAMILY : "Times New Roman",
