@@ -126,7 +126,6 @@ async function main() {
     decimalPlaces: 2,
   });
 
-<<<<<<< ours
   const lBounds = transformBounds(
     pathBounds(lPathObject),
     CURVED_L_SCALE,
@@ -147,7 +146,7 @@ async function main() {
     viewBox: `${alshBounds.x} ${alshBounds.y} ${alshBounds.width} ${alshBounds.height}`,
     paths: [
       `<path d="${aPath}" fill="#FFFFFF"/>`,
-      `<path d="${lPath}" fill="#FFFFFF" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>`,
+      `<path d="${lPath}" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="${CURVED_L_FAUX_BOLD_STROKE}" stroke-linejoin="round" stroke-linecap="round" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>`,
       `<path d="${shPath}" fill="#FFFFFF"/>`,
       `<path d="${dotAiPath}" fill="#FFFFFF"/>`,
     ],
@@ -158,14 +157,9 @@ async function main() {
     height: Math.ceil(lOnlyBounds.height),
     viewBox: `${lOnlyBounds.x} ${lOnlyBounds.y} ${lOnlyBounds.width} ${lOnlyBounds.height}`,
     paths: [
-      `<path d="${lPath}" fill="#FFFFFF" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>`,
+      `<path d="${lPath}" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="${CURVED_L_FAUX_BOLD_STROKE}" stroke-linejoin="round" stroke-linecap="round" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>`,
     ],
   });
-=======
-  const alshSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">\n      <path d="${aPath}" fill="#FFFFFF"/>\n      <path d="${lPath}" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="${CURVED_L_FAUX_BOLD_STROKE}" stroke-linejoin="round" stroke-linecap="round" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>\n      <path d="${shPath}" fill="#FFFFFF"/>\n      <path d="${dotAiPath}" fill="#FFFFFF"/>\n    </svg>\n  `;
-
-  const lSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">\n      <path d="${lPath}" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="${CURVED_L_FAUX_BOLD_STROKE}" stroke-linejoin="round" stroke-linecap="round" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>\n    </svg>\n  `;
->>>>>>> theirs
 
   await fs.writeFile(path.join(__dirname, "explora-l.svg"), lSvg, "utf8");
   await fs.writeFile(path.join(__dirname, "alsh-logo.svg"), alshSvg, "utf8");
