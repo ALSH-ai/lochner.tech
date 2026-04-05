@@ -72,7 +72,7 @@ const mimeTypes = {
 
 const SHARED_HEADER_TEMPLATE = `
   <header class="site-header">
-    <h1>Lochner Technology</h1>
+    <h1><a class="site-title-link" href="/index.html">Lochner Technology</a></h1>
     <p>Lochner Technology builds developer software and AI-assisted workflow tools.</p>
     <div class="cta-buttons">
       <a class="cta-button" href="https://www.linkedin.com/in/nicholaslochner/" target="_blank" rel="noopener" title="Open LinkedIn profile">
