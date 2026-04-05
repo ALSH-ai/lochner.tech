@@ -114,21 +114,20 @@
     }
     .section-link-with-thumb {
       display: grid;
-      grid-template-columns: minmax(260px, 34vw) 1fr;
+      grid-template-columns: minmax(180px, 26vw) 1fr;
       align-items: stretch;
       gap: 1.25rem;
     }
     .section-thumb {
       width: 100%;
-      max-width: 520px;
-      aspect-ratio: 16 / 10;
+      max-width: 420px;
+      height: auto;
       border-radius: 10px;
       margin: 0;
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-      object-fit: contain;
+      object-fit: cover;
       align-self: center;
       justify-self: start;
-      background: rgba(8, 11, 20, 0.55);
     }
     .section-body {
       display: flex;
@@ -252,7 +251,7 @@
       }
       .section-thumb {
         width: 100%;
-        max-height: 360px;
+        max-height: 260px;
       }
     }
     .cta-button {
