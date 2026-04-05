@@ -129,29 +129,47 @@ const requestHandler = (req, res) => {
 
   fs.stat(filePath, (statErr, stats) => {
     if (statErr) {
-      respond404(res);
-      return;
-    }
+      const fallbackPath = path.normalize(path.join(ROOT_DIR, `${relativePath}.html`));
+      const fallbackWithinRoot = fallbackPath.startsWith(ROOT_DIR);
 
-    const resolvedPath = stats.isDirectory() ? path.join(filePath, 'index.html') : filePath;
-
-    fs.readFile(resolvedPath, (readErr, data) => {
-      if (readErr) {
+      if (!fallbackWithinRoot) {
         respond404(res);
         return;
       }
 
-      const ext = path.extname(resolvedPath).toLowerCase();
-      const contentType = mimeTypes[ext] || 'application/octet-stream';
-      const responseData = ext === '.html'
-        ? applySharedTemplate(data.toString('utf8'))
-        : data;
+      fs.stat(fallbackPath, (fallbackErr, fallbackStats) => {
+        if (fallbackErr || !fallbackStats.isFile()) {
+          respond404(res);
+          return;
+        }
 
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(responseData);
-    });
+        servePath(fallbackPath, res);
+      });
+      return;
+    }
+
+    const resolvedPath = stats.isDirectory() ? path.join(filePath, 'index.html') : filePath;
+    servePath(resolvedPath, res);
   });
 };
+
+function servePath(resolvedPath, res) {
+  fs.readFile(resolvedPath, (readErr, data) => {
+    if (readErr) {
+      respond404(res);
+      return;
+    }
+
+    const ext = path.extname(resolvedPath).toLowerCase();
+    const contentType = mimeTypes[ext] || 'application/octet-stream';
+    const responseData = ext === '.html'
+      ? applySharedTemplate(data.toString('utf8'))
+      : data;
+
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(responseData);
+  });
+}
 
 if (defaultTlsContext) {
   http
