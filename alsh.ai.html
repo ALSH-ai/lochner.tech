@@ -65,31 +65,23 @@
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(2.2rem, 4vw, 3rem);
-      letter-spacing: 0.02em;
     }
 
-    .brand-mark {
-      font-family: "Lochner Brand Sans", "Segoe UI", sans-serif;
-      letter-spacing: 0.01em;
-      font-variant-ligatures: none;
+    .brand-logo {
+      display: block;
+      width: min(100%, 360px);
+      max-height: 86px;
+      object-fit: contain;
+      transform: translateX(-34%);
+      transform-origin: left center;
     }
 
-    .brand-l {
-      font-family: "Times New Roman", Georgia, serif;
-      font-style: italic;
-      font-weight: 700;
-      display: inline-block;
-      transform: translateY(-0.01em) scaleX(1.2);
-      margin-right: -0.08em;
-    }
-
-    .brand-rest {
-      margin-left: -0.12em;
-    }
-
-    .brand-rest {
-      margin-left: -0.12em;
+    .alsh-logo-title {
+      width: min(100%, 360px);
+      overflow: visible;
+      line-height: 0;
+      padding-bottom: 0;
+      margin-bottom: 0.2rem;
     }
 
     .hero p {
@@ -231,7 +223,7 @@
   <div class="page">
     <section class="hero">
       <p class="eyebrow"><a href="index.html">Lochner Technology</a></p>
-      <h1><span class="brand-mark">A<span class="brand-l">l</span><span class="brand-rest">SH.ai</span></span></h1>
+      <h1 class="alsh-logo-title"><img class="brand-logo" src="alsh-logo-generator/alsh-logo.png" alt="AlSH.ai"></h1>
       <p>Formerly Alfe AI · AI code agent for full-project execution</p>
       <div class="cta-row">
         <a class="cta" href="https://alsh.ai" target="_blank" rel="noopener">Try it on https://alsh.ai</a>
