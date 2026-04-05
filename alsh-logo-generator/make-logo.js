@@ -10,9 +10,9 @@ const WIDTH = 1400;
 const HEIGHT = 900;
 
 const CURVED_L_SIZE = 620;
-const CURVED_L_SCALE = 0.82;
-const CURVED_L_TRANSLATE_X = 45;
-const CURVED_L_TRANSLATE_Y = 70;
+const CURVED_L_SCALE = 0.74;
+const CURVED_L_TRANSLATE_X = 62;
+const CURVED_L_TRANSLATE_Y = 108;
 const STRAIGHT_SIZE = 300;
 
 const A_X = 90;
