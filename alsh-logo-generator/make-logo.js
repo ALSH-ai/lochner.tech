@@ -31,9 +31,9 @@ const TEXT_COLOR = "#FFFFFF";
 // registerFont("./YourBrandFont.ttf", { family: "BrandFont" });
 // const FONT_FAMILY = "BrandFont";
 
-const FONT_FAMILY = "Arial";
+const FONT_FAMILY = "Georgia";
 const FONT_WEIGHT = "700";
-const FONT_STYLE = "normal";
+const FONT_STYLE = "italic";
 
 const SIZE_MAIN = 320;
 const SIZE_AI = 250;
@@ -43,16 +43,28 @@ const BASELINE_Y = 520;
 
 // Manual character spacing.
 // Keep spacing consistent across the wordmark so no pair feels too tight/wide.
-const LETTER_SPACING = 14;
+const LETTER_SPACING = 10;
 const DOT_TO_AI_SPACING = 14;
+
+// Stylized "L" built from a lowercase "l" with a custom foot extension.
+const CURVY_L_FOOT = 120;
+const CURVY_L_THICKNESS = 26;
 
 const PARTS = [
   { text: "A", fontSize: SIZE_MAIN, dx: 0 },
-  { text: "L", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
+  { kind: "curvyL", text: "l", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: "S", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: "H", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: ".", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
-  { text: "ai", fontSize: SIZE_AI, dx: DOT_TO_AI_SPACING, yOffset: 0 }
+  {
+    text: "ai",
+    fontSize: SIZE_AI,
+    dx: DOT_TO_AI_SPACING,
+    yOffset: 0,
+    family: "Arial",
+    style: "normal",
+    weight: "700"
+  }
 ];
 
 // Add overall letter tracking if you want more openness.
@@ -71,6 +83,11 @@ function setFont(ctx, part) {
 }
 
 function measurePart(ctx, part) {
+  if (part.kind === "curvyL") {
+    setFont(ctx, part);
+    return ctx.measureText(part.text).width + CURVY_L_FOOT;
+  }
+
   setFont(ctx, part);
   const metrics = ctx.measureText(part.text).width;
   return metrics * (part.stretchX || 1);
@@ -107,17 +124,32 @@ for (let i = 0; i < PARTS.length; i++) {
   const part = PARTS[i];
   if (i > 0) x += part.dx + EXTRA_TRACKING;
 
-  setFont(ctx, part);
   const y = BASELINE_Y + (part.yOffset || 0);
-  const stretchX = part.stretchX || 1;
-  if (stretchX !== 1) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(stretchX, 1);
-    ctx.fillText(part.text, 0, 0);
-    ctx.restore();
-  } else {
+
+  if (part.kind === "curvyL") {
+    setFont(ctx, part);
+    const glyphWidth = ctx.measureText(part.text).width;
     ctx.fillText(part.text, x, y);
+
+    // Extend the lowercase "l" into a distinct capital-L foot.
+    ctx.fillRect(
+      Math.round(x + glyphWidth - 4),
+      Math.round(y - CURVY_L_THICKNESS),
+      CURVY_L_FOOT,
+      CURVY_L_THICKNESS
+    );
+  } else {
+    setFont(ctx, part);
+    const stretchX = part.stretchX || 1;
+    if (stretchX !== 1) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(stretchX, 1);
+      ctx.fillText(part.text, 0, 0);
+      ctx.restore();
+    } else {
+      ctx.fillText(part.text, x, y);
+    }
   }
 
   x += measurePart(ctx, part);
