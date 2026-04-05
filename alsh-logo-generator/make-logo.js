@@ -1,7 +1,6 @@
 // make-logo.js
 //
-// Generate a transparent PNG logo for: AlSH.ai
-// with a stylized lowercase `l` to match website branding.
+// Generate a transparent PNG logo for: ALSH.ai
 //
 // Install:
 //   npm install
@@ -49,8 +48,7 @@ const DOT_TO_AI_SPACING = 14;
 
 const PARTS = [
   { text: "A", fontSize: SIZE_MAIN, dx: 0 },
-  // Stylized l (serif + italic + a bit wider) like website `.brand-l`
-  { text: "l", fontSize: SIZE_MAIN, dx: LETTER_SPACING, family: "Times New Roman", style: "italic", stretchX: 1.2, yOffset: -4 },
+  { text: "L", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: "S", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: "H", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
   { text: ".", fontSize: SIZE_MAIN, dx: LETTER_SPACING },
