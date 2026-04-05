@@ -10,12 +10,12 @@ const WIDTH = 1400;
 const HEIGHT = 900;
 
 const CURVED_L_SIZE = 620;
-const CURVED_L_SCALE = 0.74;
-const CURVED_L_TRANSLATE_X = 162;
-const CURVED_L_TRANSLATE_Y = 108;
+const CURVED_L_SCALE = 0.66;
+const CURVED_L_TRANSLATE_X = 196;
+const CURVED_L_TRANSLATE_Y = 124;
 const STRAIGHT_SIZE = 300;
 
-const A_X = 90;
+const A_X = 120;
 const A_Y = 560;
 
 const L_X = 245;
@@ -23,7 +23,7 @@ const L_Y = 700;
 
 const SH_X = 520;
 const SH_Y = 560;
-const DOT_AI_X = 960;
+const DOT_AI_X = 930;
 const DOT_AI_Y = 560;
 const DOT_AI_SIZE = 140;
 
