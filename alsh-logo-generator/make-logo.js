@@ -9,9 +9,9 @@ const { Resvg } = require("@resvg/resvg-js");
 const CANVAS_PADDING = 24;
 
 const CURVED_L_SIZE = 620;
-const CURVED_L_SCALE = 0.66;
-const CURVED_L_TRANSLATE_X = 196;
-const CURVED_L_TRANSLATE_Y = 124;
+const CURVED_L_SCALE = 0.63;
+const CURVED_L_TRANSLATE_X = 200;
+const CURVED_L_TRANSLATE_Y = 138;
 const CURVED_L_FAUX_BOLD_STROKE = 18;
 const STRAIGHT_SIZE = 300;
 
