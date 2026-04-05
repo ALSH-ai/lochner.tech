@@ -1,5 +1,5 @@
 // make-logo.js
-// Generates ALSH logo assets with an Explora "L" and straight sans "AHS".
+// Generates ALSH.ai logo assets with an Explora "L" and straight sans "AHS.ai".
 
 const fs = require("fs/promises");
 const path = require("path");
@@ -20,6 +20,9 @@ const L_Y = 700;
 
 const SH_X = 520;
 const SH_Y = 560;
+const DOT_AI_X = 960;
+const DOT_AI_Y = 560;
+const DOT_AI_SIZE = 140;
 
 async function loadFont(fontPath) {
   const fontBuffer = await fs.readFile(fontPath);
@@ -50,9 +53,9 @@ async function main() {
     throw new Error('Could not find glyph for "L" in curved font');
   }
 
-  const lPath = lGlyph.getPath(L_X, L_Y, CURVED_L_SIZE).toPathData({
+  const lPath = lGlyph.getPath(L_X, L_Y - 40, CURVED_L_SIZE).toPathData({
     flipY: true,
-    flipYBase: L_Y,
+    flipYBase: L_Y - 40,
     optimize: true,
     decimalPlaces: 2,
   });
@@ -71,7 +74,14 @@ async function main() {
     decimalPlaces: 2,
   });
 
-  const alshSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">\n      <path d="${aPath}" fill="#FFFFFF"/>\n      <path d="${lPath}" fill="#FFFFFF"/>\n      <path d="${shPath}" fill="#FFFFFF"/>\n    </svg>\n  `;
+  const dotAiPath = straightFont.getPath(".ai", DOT_AI_X, DOT_AI_Y, DOT_AI_SIZE).toPathData({
+    flipY: true,
+    flipYBase: DOT_AI_Y,
+    optimize: true,
+    decimalPlaces: 2,
+  });
+
+  const alshSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">\n      <path d="${aPath}" fill="#FFFFFF"/>\n      <path d="${lPath}" fill="#FFFFFF"/>\n      <path d="${shPath}" fill="#FFFFFF"/>\n      <path d="${dotAiPath}" fill="#FFFFFF"/>\n    </svg>\n  `;
 
   const lSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">\n      <path d="${lPath}" fill="#FFFFFF"/>\n    </svg>\n  `;
 
@@ -91,7 +101,7 @@ async function main() {
   await fs.writeFile(path.join(__dirname, "alsh-logo.png"), alshResvg.render().asPng());
   await fs.writeFile(path.join(__dirname, "explora-l.png"), lResvg.render().asPng());
 
-  console.log("Wrote alsh-logo.svg/png (A+L+SH) and explora-l.svg/png");
+  console.log("Wrote alsh-logo.svg/png (A+L+SH+.ai) and explora-l.svg/png");
 }
 
 main().catch((err) => {
