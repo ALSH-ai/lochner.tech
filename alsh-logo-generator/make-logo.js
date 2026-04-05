@@ -10,6 +10,9 @@ const WIDTH = 1400;
 const HEIGHT = 900;
 
 const CURVED_L_SIZE = 620;
+const CURVED_L_SCALE = 0.82;
+const CURVED_L_TRANSLATE_X = 45;
+const CURVED_L_TRANSLATE_Y = 70;
 const STRAIGHT_SIZE = 300;
 
 const A_X = 90;
@@ -81,9 +84,9 @@ async function main() {
     decimalPlaces: 2,
   });
 
-  const alshSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">\n      <path d="${aPath}" fill="#FFFFFF"/>\n      <path d="${lPath}" fill="#FFFFFF"/>\n      <path d="${shPath}" fill="#FFFFFF"/>\n      <path d="${dotAiPath}" fill="#FFFFFF"/>\n    </svg>\n  `;
+  const alshSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">\n      <path d="${aPath}" fill="#FFFFFF"/>\n      <path d="${lPath}" fill="#FFFFFF" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>\n      <path d="${shPath}" fill="#FFFFFF"/>\n      <path d="${dotAiPath}" fill="#FFFFFF"/>\n    </svg>\n  `;
 
-  const lSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">\n      <path d="${lPath}" fill="#FFFFFF"/>\n    </svg>\n  `;
+  const lSvg = `\n    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">\n      <path d="${lPath}" fill="#FFFFFF" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>\n    </svg>\n  `;
 
   await fs.writeFile(path.join(__dirname, "explora-l.svg"), lSvg, "utf8");
   await fs.writeFile(path.join(__dirname, "alsh-logo.svg"), alshSvg, "utf8");
