@@ -337,7 +337,7 @@
         <small>Formerly Alfe AI</small>
       </div>
     </a>
-    <a href="lochner-apparel.html" class="section-link section-link-with-thumb" target="_blank" rel="noopener">
+    <a href="lochner-apparel.html" class="section-link section-link-with-thumb">
       <img class="section-thumb" src="images/lochner/1.jpg" alt="Lochner Apparel AI-generated T-shirt design on a model">
       <div class="section-body">
         <h2 class="lochner-apparel-title">Lochner Apparel</h2>
@@ -438,6 +438,44 @@
       </div>
     </section>
   </main>
+  <script>
+    (() => {
+      const internalCards = document.querySelectorAll('a.section-link[href]');
+
+      const randomToken = () => {
+        if (window.crypto?.getRandomValues) {
+          const bytes = new Uint32Array(2);
+          window.crypto.getRandomValues(bytes);
+          return `${bytes[0].toString(36)}${bytes[1].toString(36)}`;
+        }
+
+        return Math.random().toString(36).slice(2);
+      };
+
+      const applyCacheBust = (anchor) => {
+        const rawHref = anchor.getAttribute('href');
+
+        if (!rawHref) {
+          return;
+        }
+
+        const url = new URL(rawHref, window.location.href);
+
+        if (url.origin !== window.location.origin || !url.pathname.endsWith('.html')) {
+          return;
+        }
+
+        url.searchParams.set('_cb', `${Date.now()}-${randomToken()}`);
+        anchor.href = `${url.pathname}${url.search}${url.hash}`;
+      };
+
+      internalCards.forEach((anchor) => {
+        anchor.addEventListener('click', () => applyCacheBust(anchor));
+        anchor.addEventListener('auxclick', () => applyCacheBust(anchor));
+      });
+    })();
+  </script>
+
   <!-- SHARED_FOOTER -->
 
 </body>
