@@ -24,3 +24,9 @@ node make-logo.js
 npm install
 node make-logo.js
 ```
+
+Optional: set an explicit output height (in px) and width is derived from the logo aspect ratio.
+
+```bash
+node make-logo.js -h 40
+```
