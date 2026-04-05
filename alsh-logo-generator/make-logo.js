@@ -74,7 +74,54 @@ function renderSvg({ width, height, viewBox, paths }) {
   return `\n    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${viewBox}">\n      ${paths.join("\n      ")}\n    </svg>\n  `;
 }
 
+function parseCliArgs(argv) {
+  const args = argv.slice(2);
+  let targetHeight;
+
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+
+    if (arg === "-h" || arg === "--height") {
+      const rawValue = args[i + 1];
+      const parsedHeight = Number(rawValue);
+
+      if (!rawValue || !Number.isFinite(parsedHeight) || parsedHeight <= 0) {
+        throw new Error(
+          `Invalid height value "${rawValue ?? ""}". Use a positive number of pixels, e.g. -h 40`
+        );
+      }
+
+      targetHeight = parsedHeight;
+      i += 1;
+      continue;
+    }
+
+    throw new Error(
+      `Unknown argument "${arg}". Supported flags: -h <pixels>, --height <pixels>`
+    );
+  }
+
+  return { targetHeight };
+}
+
+function scaleDimensionsToHeight(width, height, targetHeight) {
+  if (!targetHeight) {
+    return {
+      width: Math.ceil(width),
+      height: Math.ceil(height),
+    };
+  }
+
+  const scale = targetHeight / height;
+  return {
+    width: Math.ceil(width * scale),
+    height: Math.ceil(targetHeight),
+  };
+}
+
 async function main() {
+  const { targetHeight } = parseCliArgs(process.argv);
+
   const curvedFontPath =
     process.env.EXPLORA_FONT_PATH ||
     path.join(__dirname, "fonts", "Explora-Regular.ttf");
@@ -139,10 +186,20 @@ async function main() {
   );
 
   const lOnlyBounds = mergeBounds([lBounds], CANVAS_PADDING);
+  const alshDimensions = scaleDimensionsToHeight(
+    alshBounds.width,
+    alshBounds.height,
+    targetHeight
+  );
+  const lDimensions = scaleDimensionsToHeight(
+    lOnlyBounds.width,
+    lOnlyBounds.height,
+    targetHeight
+  );
 
   const alshSvg = renderSvg({
-    width: Math.ceil(alshBounds.width),
-    height: Math.ceil(alshBounds.height),
+    width: alshDimensions.width,
+    height: alshDimensions.height,
     viewBox: `${alshBounds.x} ${alshBounds.y} ${alshBounds.width} ${alshBounds.height}`,
     paths: [
       `<path d="${aPath}" fill="#FFFFFF"/>`,
@@ -153,8 +210,8 @@ async function main() {
   });
 
   const lSvg = renderSvg({
-    width: Math.ceil(lOnlyBounds.width),
-    height: Math.ceil(lOnlyBounds.height),
+    width: lDimensions.width,
+    height: lDimensions.height,
     viewBox: `${lOnlyBounds.x} ${lOnlyBounds.y} ${lOnlyBounds.width} ${lOnlyBounds.height}`,
     paths: [
       `<path d="${lPath}" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="${CURVED_L_FAUX_BOLD_STROKE}" stroke-linejoin="round" stroke-linecap="round" transform="translate(${CURVED_L_TRANSLATE_X} ${CURVED_L_TRANSLATE_Y}) scale(${CURVED_L_SCALE})"/>`,
@@ -165,12 +222,12 @@ async function main() {
   await fs.writeFile(path.join(__dirname, "alsh-logo.svg"), alshSvg, "utf8");
 
   const alshResvg = new Resvg(alshSvg, {
-    fitTo: { mode: "original" },
+    fitTo: targetHeight ? { mode: "height", value: Math.ceil(targetHeight) } : { mode: "original" },
     background: "rgba(0,0,0,0)",
   });
 
   const lResvg = new Resvg(lSvg, {
-    fitTo: { mode: "original" },
+    fitTo: targetHeight ? { mode: "height", value: Math.ceil(targetHeight) } : { mode: "original" },
     background: "rgba(0,0,0,0)",
   });
 
