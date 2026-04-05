@@ -8,6 +8,7 @@ const ROOT_DIR = __dirname;
 const HTTP_PORT = resolveHttpPort(process.argv.slice(2));
 const HTTPS_PORT = 443;
 const NON_PUBLIC_PATH_PREFIXES = ['/alsh-logo-generator', '/alsh-logo-generator/'];
+const PUBLIC_FILE_OVERRIDES = new Set(['/alsh-logo-generator/alsh-logo.png']);
 
 const TLS_CERTIFICATES = [
   {
@@ -78,7 +79,7 @@ const requestHandler = (req, res) => {
 
   const relativePath = urlPath === '/' ? '/index.html' : urlPath;
 
-  if (NON_PUBLIC_PATH_PREFIXES.some((prefix) => relativePath === prefix || relativePath.startsWith(prefix))) {
+  if (!PUBLIC_FILE_OVERRIDES.has(relativePath) && NON_PUBLIC_PATH_PREFIXES.some((prefix) => relativePath === prefix || relativePath.startsWith(prefix))) {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Not Found');
     return;
