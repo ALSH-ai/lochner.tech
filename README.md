@@ -1,3 +1,5 @@
+This code is unlicensed and may not be used for commercial purposes. You may use it as a technical reference. 
+
 # lochner.tech static site host
 
 This repository includes a Node.js server to host the static website files over both HTTP and HTTPS.
