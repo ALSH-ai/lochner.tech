@@ -78,9 +78,6 @@ const SHARED_HEADER_TEMPLATE = `
       <a class="cta-button" href="https://www.linkedin.com/in/nicholaslochner/" target="_blank" rel="noopener" title="Open LinkedIn profile">
         LinkedIn
       </a>
-      <a class="cta-button" href="https://www.freelancer.com/hireme/nlochner" target="_blank" rel="noopener" title="Open Freelancer profile">
-        Freelancer.com
-      </a>
       <a class="cta-button" href="https://github.com/lochner-lw" target="_blank" rel="noopener" title="Open GitHub profile">
         GitHub
         <span class="cta-button-icon" aria-hidden="true">
@@ -93,7 +90,7 @@ const SHARED_HEADER_TEMPLATE = `
         NPM
       </a>
     </div>
-    <p class="banner-email"><a href="mailto:hello@lochner.tech">hello@lochner.tech</a></p>
+    <p class="banner-email"><a href="mailto:engineering@lochner.tech">engineering@lochner.tech</a></p>
   </header>
 `;
 
