@@ -8,6 +8,10 @@ const ROOT_DIR = __dirname;
 const HTTP_PORT = resolveHttpPort(process.argv.slice(2));
 const HTTPS_PORT = 443;
 const COPYRIGHT_YEAR = new Date().getFullYear();
+const ROUTE_ALIASES = new Map([
+  ['/lochner-apparel', '/lochner-apparel.html'],
+  ['/alsh', '/alsh.ai.html'],
+]);
 const NON_PUBLIC_PATH_PREFIXES = ['/alsh-logo-generator', '/alsh-logo-generator/'];
 const PUBLIC_FILE_OVERRIDES = new Set(['/alsh-logo-generator/alsh-logo.png']);
 
@@ -108,7 +112,7 @@ const requestHandler = (req, res) => {
     return;
   }
 
-  const relativePath = urlPath === '/' ? '/index.html' : urlPath;
+  const relativePath = ROUTE_ALIASES.get(urlPath) || (urlPath === '/' ? '/index.html' : urlPath);
 
   if (!PUBLIC_FILE_OVERRIDES.has(relativePath) && NON_PUBLIC_PATH_PREFIXES.some((prefix) => relativePath === prefix || relativePath.startsWith(prefix))) {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
